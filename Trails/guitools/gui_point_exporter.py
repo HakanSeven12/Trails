@@ -23,10 +23,9 @@
 """Provides GUI tools to export Cluster points."""
 
 import FreeCAD, FreeCADGui
-from PySide2 import QtCore, QtWidgets
 
-from libs import icons_path, ui_path
-from ..get import get_clusters
+from libs import icons_path
+from ..tasks import task_cluster_export
 
 
 class PointExporter:
@@ -38,14 +37,7 @@ class PointExporter:
         """
         Constructor
         """
-        # Get *.ui file(s)
-        ui = FreeCADGui.PySideUic.loadUi(ui_path + "/export_points.ui")
-
-        # UI connections
-        ui.BrowseB.clicked.connect(self.file_destination)
-        ui.ExportB.clicked.connect(self.export_points)
-        ui.CancelB.clicked.connect(ui.close)
-        self.ui = ui
+        pass
 
     def GetResources(self):
         """
@@ -71,94 +63,7 @@ class PointExporter:
         """
         Command activation method
         """
-        # Create 'Point_Groups' group
-        clusters = get_clusters.get()
-
-        # Set and show UI
-        self.ui.setParent(FreeCADGui.getMainWindow())
-        self.ui.setWindowFlags(QtCore.Qt.Window)
-        self.ui.show()
-
-        # Clear previous operation
-        self.ui.FileDestinationLE.clear()
-        self.ui.PointGroupsLW.clear()
-
-        # Add point groups to QListWidget
-        self.group_dict = {}
-        for child in clusters.Group:
-            if child.Proxy.Type == 'Trails::Cluster':
-                self.group_dict[child.Label] = child
-                self.ui.PointGroupsLW.addItem(child.Label)
-
-    def file_destination(self):
-        """
-        Get file destination.
-        """
-        # Select file
-        parameter = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General")
-        path = parameter.GetString("FileOpenSavePath")
-        file_name = QtWidgets.QFileDialog.getSaveFileName(
-            None, 'Save File', path, Filter='*.txt')
-
-        # Add ".txt" if needed
-        if file_name[0][-4:] == ".txt":
-            fn = file_name[0]
-        else:
-            fn = file_name[0] + ".txt"
-
-        self.ui.FileDestinationLE.setText(fn)
-
-    def export_points(self):
-        """
-        Export selected point group(s).
-        """
-        # Get user inputs
-        line_edit = self.ui.FileDestinationLE
-        point_name = self.ui.PointNameLE.text()
-        northing = self.ui.NorthingLE.text()
-        easting = self.ui.EastingLE.text()
-        elevation = self.ui.ElevationLE.text()
-        description = self.ui.DescriptionLE.text()
-
-        if line_edit.text().strip() == "" or self.ui.PointGroupsLW.count() < 1:
-            return
-
-        # Set delimiter
-        if self.ui.DelimiterCB.currentText() == "Space":
-            delimiter = ' '
-        elif self.ui.DelimiterCB.currentText() == "Comma":
-            delimiter = ','
-
-        # Create point file
-        try:
-            file = open(line_edit.text(), 'w')
-        except Exception:
-            FreeCAD.Console.PrintMessage("Can't open file")
-
-        counter = 1
-        # Get selected point groups
-        for selection in self.ui.PointGroupsLW.selectedIndexes():
-            group = self.group_dict[selection.data()]
-
-            # Print points to the file
-            for p in group.Vectors:
-                index = group.Vectors.index(p)
-                x = str(round(p.x/1000, 3))
-                y = str(round(p.y/1000, 3))
-                z = str(round(p.z/1000, 3))
-
-                if group.PointNames:
-                    pn = group.PointNames[index]
-                else:
-                    pn = counter
-                    counter += 1
-
-                des = ''
-                if group.Descriptions:
-                    des = group.Descriptions[index]
-
-                format = [pn, x, y, z, des]
-                file.write(delimiter.join(format) +"\n")
-        file.close()
+        panel = task_cluster_export.TaskClusterExport()
+        FreeCADGui.Control.showDialog(panel)
 
 FreeCADGui.addCommand('Export Points', PointExporter())
