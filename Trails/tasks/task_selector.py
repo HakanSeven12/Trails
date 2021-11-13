@@ -1,6 +1,5 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2019 Joel Graff <monograff76@gmail.com>                 *
 # *   Copyright (c) 2021 Hakan Seven <hakanseven12@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -36,14 +35,13 @@ class TaskSelector(TaskPanel):
         self.form.setWindowTitle('Select Cluster(s)')
         self.object = object
         self.link_prop = link_prop
+        self.prev = getattr(object, link_prop)
         self.list_targets(group)
 
     def list_targets(self, group):
-        prev = getattr(self.object, self.link_prop)
-
         self.group_dict = {}
         for i in group.Group:
-            if i in prev: continue
+            if i in self.prev: continue
             self.group_dict[i.Label] = i
 
         keys = list(self.group_dict.keys())
@@ -56,8 +54,7 @@ class TaskSelector(TaskPanel):
         for i in items:
             selected.append(self.group_dict[i.text()])
 
-        prev = getattr(self.object, self.link_prop)
-        setattr(self.object, self.link_prop, prev + selected)
+        setattr(self.object, self.link_prop, self.prev + selected)
 
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
