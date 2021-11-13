@@ -47,7 +47,7 @@ class TrailsWorkbench(FreeCADGui.Workbench):
         self.group = 8
 
         self.command_ui = {
-            'Point Tools': {
+            'Cluster Tools': {
                 'gui': self.menu + self.toolbar,
                 'cmd': ['Create Cluster',
                     'Import Points',
