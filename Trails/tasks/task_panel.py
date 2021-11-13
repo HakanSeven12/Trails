@@ -1,6 +1,5 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2019 Joel Graff <monograff76@gmail.com>                 *
 # *   Copyright (c) 2021 Hakan Seven <hakanseven12@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
