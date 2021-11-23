@@ -125,8 +125,8 @@ class ViewProviderTerrain(terrain_functions.ViewFunctions):
 
         shape_hints = coin.SoShapeHints()
         shape_hints.vertex_ordering = coin.SoShapeHints.COUNTERCLOCKWISE
-        mat_binding = coin.SoMaterialBinding()
-        mat_binding.value = coin.SoMaterialBinding.PER_FACE
+        self.mat_binding = coin.SoMaterialBinding()
+        self.mat_binding.value = coin.SoMaterialBinding.OVERALL
         offset = coin.SoPolygonOffset()
         offset.styles = coin.SoPolygonOffset.LINES
         offset.factor = -2.0
@@ -178,7 +178,7 @@ class ViewProviderTerrain(terrain_functions.ViewFunctions):
         highlight = coin.SoType.fromName('SoFCSelection').createInstance()
         highlight.style = 'EMISSIVE_DIFFUSE'
         highlight.addChild(shape_hints)
-        highlight.addChild(mat_binding)
+        highlight.addChild(self.mat_binding)
         highlight.addChild(self.geo_coords)
         highlight.addChild(self.triangles)
         highlight.addChild(boundaries)
@@ -358,7 +358,7 @@ class ViewProviderTerrain(terrain_functions.ViewFunctions):
 
             self.boundary_coords.point.values = points
             self.boundary_lines.numVertices.values = vertices
-        """
+        
         if prop == "AnalysisType" or prop == "Ranges":
             analysis_type = obj.getPropertyByName("AnalysisType")
             ranges = obj.getPropertyByName("Ranges")
@@ -367,15 +367,23 @@ class ViewProviderTerrain(terrain_functions.ViewFunctions):
                 if hasattr(obj.ViewObject, "ShapeMaterial"):
                     material = obj.ViewObject.ShapeMaterial
                     self.face_material.diffuseColor = material.DiffuseColor[:3]
+                    self.mat_binding.value = coin.SoMaterialBinding.OVERALL
 
             if analysis_type == "Elevation":
                 colorlist = self.elevation_analysis(obj.Mesh, ranges)
+                self.mat_binding.value = coin.SoMaterialBinding.PER_FACE
                 self.face_material.diffuseColor.setValues(0,len(colorlist),colorlist)
 
             elif analysis_type == "Slope":
                 colorlist = self.slope_analysis(obj.Mesh, ranges)
+                self.mat_binding.value = coin.SoMaterialBinding.PER_FACE
                 self.face_material.diffuseColor.setValues(0,len(colorlist),colorlist)
-        """
+
+            elif analysis_type == "Orientation":
+                colorlist = self.orientation_analysis(obj.Mesh, ranges)
+                self.mat_binding.value = coin.SoMaterialBinding.PER_FACE
+                self.face_material.diffuseColor.setValues(0,len(colorlist),colorlist)
+        
     def getDisplayModes(self,vobj):
         '''
         Return a list of display modes.
