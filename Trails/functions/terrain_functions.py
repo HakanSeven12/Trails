@@ -242,16 +242,40 @@ class ViewFunctions:
         colorlist = []
         for facet in mesh.Facets:
             normal = facet.Normal
-            radian = normal.getAngle(FreeCAD.Vector(1, 1, 0))
-            angle = math.degrees(radian)
+            radian = normal.getAngle(FreeCAD.Vector(0, 0, 1))
+            angle = math.degrees(radian*2)
 
-            if angle < 45:
+            if angle < 15:
                 colorlist.append((0.0, 1.0, 0.0))
-            if angle < 90:
+            elif angle < 30:
                 colorlist.append((0.0, 1.0, 1.0))
-            if angle < 135:
+            elif angle < 45:
                 colorlist.append((0.0, 0.0, 1.0))
             else:
-                colorlist.append((1.0, 0.0, 1.0))
+                colorlist.append((1.0, 0.0, 0.0))
+
+        return colorlist
+
+    def orientation_analysis(self, mesh, ranges):
+        colorlist = []
+        for facet in mesh.Facets:
+            normal = copy.deepcopy(facet.Normal)
+            normal.z = 0
+            anglex = math.degrees(normal.getAngle(FreeCAD.Vector(1, 0, 0)))
+            angley = math.degrees(normal.getAngle(FreeCAD.Vector(0, 1, 0)))
+
+            if angley >= 90:
+                anglex = 360.0 - anglex
+
+            if anglex < 45:
+                colorlist.append((0.0, 1.0, 0.0))
+            elif anglex < 135:
+                colorlist.append((0.0, 1.0, 1.0))
+            elif anglex < 225:
+                colorlist.append((0.0, 0.0, 1.0))
+            elif anglex < 315:
+                colorlist.append((1.0, 0.0, 0.0))
+            else:
+                colorlist.append((0.0, 1.0, 0.0))
 
         return colorlist
