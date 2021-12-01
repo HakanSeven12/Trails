@@ -24,7 +24,8 @@
 
 import FreeCAD
 import Mesh, Part
-import numpy, copy, math
+
+import numpy, copy, math, colorsys
 import scipy.spatial
 import itertools as itools
 from collections import Counter
@@ -214,46 +215,40 @@ class ViewFunctions:
             vertices.append(len(vectors))
 
         del copy_shape
-
         return points, vertices
 
     def elevation_analysis(self, mesh, ranges):
-        scale = (mesh.BoundBox.ZMax - mesh.BoundBox.ZMin) / 100
-        colorlist = []
+        max = mesh.BoundBox.ZMax
+        min = mesh.BoundBox.ZMin
 
+        colorlist = []
         for facet in mesh.Facets:
             z = facet.Points[0][2] + facet.Points[1][2] + facet.Points[2][2]
-            zz = (z/3 - mesh.BoundBox.ZMin) / scale
 
-            if zz < 20:
-                colorlist.append((0.0, 1.0, 0.0))
-            elif zz < 40:
-                colorlist.append((0.0, 1.0, 1.0))
-            elif zz < 60:
-                colorlist.append((0.0, 0.0, 1.0))
-            elif zz < 80:
-                colorlist.append((1.0, 0.0, 1.0))
-            else:
-                colorlist.append((1.0, 0.0, 0.0))
+            hue = 1
+            elevations = numpy.arange(min, max, (max-min)/ranges)
+            for i in elevations:
+                if z/3 < i: 
+                    hue = i/(max-min)
+                    break
 
+            colorlist.append(colorsys.hls_to_rgb(hue, 0.5, 0.5))
         return colorlist
 
     def slope_analysis(self, mesh, ranges):
         colorlist = []
         for facet in mesh.Facets:
             normal = facet.Normal
-            radian = normal.getAngle(FreeCAD.Vector(0, 0, 1))
-            angle = math.degrees(radian*2)
+            angle = math.degrees(normal.getAngle(FreeCAD.Vector(0, 0, 1))*2)
 
-            if angle < 15:
-                colorlist.append((0.0, 1.0, 0.0))
-            elif angle < 30:
-                colorlist.append((0.0, 1.0, 1.0))
-            elif angle < 45:
-                colorlist.append((0.0, 0.0, 1.0))
-            else:
-                colorlist.append((1.0, 0.0, 0.0))
+            hue = 1
+            slopes = numpy.arange(0.0, 90.0, 90.0/ranges)
+            for i in slopes:
+                if angle < i: 
+                    hue = i/90.0
+                    break
 
+            colorlist.append(colorsys.hls_to_rgb(hue, 0.5, 0.5))
         return colorlist
 
     def orientation_analysis(self, mesh, ranges):
@@ -267,15 +262,12 @@ class ViewFunctions:
             if angley >= 90:
                 anglex = 360.0 - anglex
 
-            if anglex < 45:
-                colorlist.append((0.0, 1.0, 0.0))
-            elif anglex < 135:
-                colorlist.append((0.0, 1.0, 1.0))
-            elif anglex < 225:
-                colorlist.append((0.0, 0.0, 1.0))
-            elif anglex < 315:
-                colorlist.append((1.0, 0.0, 0.0))
-            else:
-                colorlist.append((0.0, 1.0, 0.0))
+            hue = 0.0
+            directions = numpy.arange(0.0, 360.0, 360.0/ranges)
+            for i in directions:
+                if anglex < i + directions[1]/2: 
+                    hue = i/360.0
+                    break
 
+            colorlist.append(colorsys.hls_to_rgb(hue, 0.5, 0.5))
         return colorlist
