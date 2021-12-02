@@ -379,8 +379,8 @@ class ViewProviderTerrain(terrain_functions.ViewFunctions):
                 self.mat_binding.value = coin.SoMaterialBinding.PER_FACE
                 self.face_material.diffuseColor.setValues(0,len(colorlist),colorlist)
 
-            elif analysis_type == "Orientation":
-                colorlist = self.orientation_analysis(obj.Mesh, ranges)
+            elif analysis_type == "Direction":
+                colorlist = self.direction_analysis(obj.Mesh, ranges)
                 self.mat_binding.value = coin.SoMaterialBinding.PER_FACE
                 self.face_material.diffuseColor.setValues(0,len(colorlist),colorlist)
         
