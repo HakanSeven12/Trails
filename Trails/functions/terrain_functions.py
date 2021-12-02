@@ -155,7 +155,6 @@ class DataFunctions:
         minors = Part.makeCompound(minor_contours)
 
         del major_contours, minor_contours
-
         return Part.makeCompound([majors, minors])
 
     def get_boundary(self, mesh):
@@ -251,7 +250,7 @@ class ViewFunctions:
             colorlist.append(colorsys.hls_to_rgb(hue, 0.5, 0.5))
         return colorlist
 
-    def orientation_analysis(self, mesh, ranges):
+    def direction_analysis(self, mesh, ranges):
         colorlist = []
         for facet in mesh.Facets:
             normal = copy.deepcopy(facet.Normal)
