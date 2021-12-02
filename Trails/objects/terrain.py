@@ -76,7 +76,7 @@ class Terrain(DataFunctions):
         # Analysis properties.
         obj.addProperty(
             "App::PropertyEnumeration", "AnalysisType", "Analysis",
-            "Set analysis type").AnalysisType = ["Default", "Elevation", "Slope", "Orientation"]
+            "Set analysis type").AnalysisType = ["Default", "Elevation", "Slope", "Direction"]
 
         obj.addProperty(
             "App::PropertyInteger", "Ranges", "Analysis",
