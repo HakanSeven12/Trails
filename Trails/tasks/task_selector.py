@@ -30,18 +30,19 @@ from .task_panel import TaskPanel
 
 class TaskSelector(TaskPanel):
 
-    def __init__(self, object, link_prop, group):
+    def __init__(self, obj, prop, group):
         self.form = FreeCADGui.PySideUic.loadUi(ui_path + '/selector.ui')
-        self.form.setWindowTitle('Select Cluster(s)')
-        self.object = object
-        self.link_prop = link_prop
-        self.prev = getattr(object, link_prop)
-        self.list_targets(group)
+        self.form.setWindowTitle('Select from ' + group.Label)
+        self.form.setWindowIcon(group.ViewObject.Icon)
+        self.prev = getattr(obj, prop)
+        self.object = obj
+        self.property = prop
+        self.list_targets(self.prev, group)
 
-    def list_targets(self, group):
+    def list_targets(self, prev, group):
         self.group_dict = {}
         for i in group.Group:
-            if i in self.prev: continue
+            if i in prev: continue
             self.group_dict[i.Label] = i
 
         keys = list(self.group_dict.keys())
@@ -54,7 +55,7 @@ class TaskSelector(TaskPanel):
         for i in items:
             selected.append(self.group_dict[i.text()])
 
-        setattr(self.object, self.link_prop, self.prev + selected)
+        setattr(self.object, self.property, self.prev + selected)
 
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
