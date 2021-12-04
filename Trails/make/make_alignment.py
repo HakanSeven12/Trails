@@ -40,7 +40,7 @@ def create(geometry, label="Alignment", zero_reference=False):
         return
 
     get_georigin.get()
-    group = alignments.get()
+    group = get_alignments.get()
     obj=FreeCAD.ActiveDocument.addObject(
         "App::DocumentObjectGroupPython", "Alignment")
 
