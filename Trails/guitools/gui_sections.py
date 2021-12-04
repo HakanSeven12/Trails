@@ -23,23 +23,18 @@
 """Provides GUI tools to create Section objects."""
 
 import FreeCAD, FreeCADGui
-from PySide2 import QtCore
-from pivy import coin
 
-from libs import icons_path, ui_path
-from ..get import get_terrains
-from ..make import make_section
+from libs import icons_path
+from ..tasks import task_create_sections
 
 
 class CreateSections:
 
     def __init__(self):
-        # Import *.ui file(s)
-        self.IPFui = FreeCADGui.PySideUic.loadUi(ui_path + "/create_sections.ui")
-
-        # Set button functions
-        self.IPFui.CreateB.clicked.connect(self.start_event)
-        self.IPFui.CancelB.clicked.connect(self.IPFui.close)
+        """
+        Constructor
+        """
+        pass
 
     def GetResources(self):
         """
@@ -68,59 +63,7 @@ class CreateSections:
         """
         Command activation method
         """
-        self.view = FreeCADGui.ActiveDocument.ActiveView
-        self.IPFui.setParent(FreeCADGui.getMainWindow())
-        self.IPFui.setWindowFlags(QtCore.Qt.Window)
-        self.IPFui.SelectSurfacesLW.clear()
-        self.IPFui.show()
-
-        self.terrain_list = {}
-        terrains = get_terrains.get()
-        for terrain in terrains.Group:
-            self.terrain_list[terrain.Label] = terrain
-            self.IPFui.SelectSurfacesLW.addItem(terrain.Label)
-
-    def start_event(self):
-        """
-        Start event to detect mouse click
-        """
-        self.callback = self.view.addEventCallbackPivy(
-            coin.SoButtonEvent.getClassTypeId(), self.select_position)
-
-    def select_position(self, event):
-        """
-        Select section views location
-        """
-        # Get event
-        event = event.getEvent()
-
-        # If mouse left button pressed get picked point
-        if event.getTypeId().isDerivedFrom(coin.SoMouseButtonEvent.getClassTypeId()):
-            if event.getButton() == coin.SoMouseButtonEvent.BUTTON1 \
-                and event.getState() == coin.SoMouseButtonEvent.DOWN:
-
-                # Finish event
-                self.view.removeEventCallbackPivy(
-                    coin.SoButtonEvent.getClassTypeId(), self.callback)
-
-                pos = event.getPosition().getValue()
-                position = self.view.getPoint(pos[0], pos[1])
-                position.z = 0
-
-                region = self.selection[-1]
-
-                for item in region.Group:
-                    if item.Proxy.Type == 'Trails::Sections':
-                        cs = item
-                        cs.Position = position
-                        break
-
-                for item in self.IPFui.SelectSurfacesLW.selectedItems():
-                    surface = self.terrain_list[item.text()]
-                    sec = make_section.create()
-                    cs.addObject(sec)
-                    sec.Surface = surface
-
-                FreeCAD.ActiveDocument.recompute()
+        panel = task_create_sections.TaskCreateSections()
+        FreeCADGui.Control.showDialog(panel)
 
 FreeCADGui.addCommand('Create Sections', CreateSections())
