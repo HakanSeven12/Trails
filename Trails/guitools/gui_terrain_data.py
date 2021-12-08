@@ -20,19 +20,19 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""Provides GUI tools to create Region objects."""
+"""Provides GUI tools to add data to Terrain objects."""
 
 import FreeCAD, FreeCADGui
+from pivy import coin
 
 from libs import icons_path
-from ..make import make_region
-from ..tasks import task_create_region
-from ..get import get_alignments
+from ..tasks import task_terrain_data
+from ..get import get_clusters
 
 
-class CreateRegion:
+class AddCluster:
     """
-    Command to create a new Region object for selected alignment
+    Command to add a point to Terrain.
     """
 
     def __init__(self):
@@ -45,11 +45,9 @@ class CreateRegion:
         """
         Return the command resources dictionary
         """
-        return {
-            'Pixmap': icons_path + '/CreateRegion.svg',
-            'MenuText': "Create Region",
-            'ToolTip': "Create Region for selected alignment"
-            }
+        return {'Pixmap': icons_path + '/AddTriangle.svg',
+            'MenuText': "Add Cluster",
+            'ToolTip': "Add a cluster to selected Terrain."}
 
     def IsActive(self):
         """
@@ -57,22 +55,20 @@ class CreateRegion:
         """
         # Check for document
         if FreeCAD.ActiveDocument:
-            return True
+            # Check for selected object
+            selection = FreeCADGui.Selection.getSelection()
+            if len(selection)==1:
+                if selection[0].Proxy.Type == 'Trails::Terrain':
+                    self.terrain = selection[0]
+                    return True
         return False
 
     def Activated(self):
         """
         Command activation method
         """
-        # Check for selected object
-        try:
-            if selection[-1].Proxy.Type == 'Trails::Alignment':
-                selection = FreeCADGui.Selection.getSelection()
-                make_region.create(selection[-1])
-        
-        except Exception:
-            group = get_alignments.get()
-            panel = task_create_region.TaskCreateRegion(group)
-            FreeCADGui.Control.showDialog(panel)
+        clusters = get_clusters.get()
+        panel = task_terrain_data.TaskSelector(self.terrain, "Clusters", clusters)
+        FreeCADGui.Control.showDialog(panel)
 
-FreeCADGui.addCommand('Create Region', CreateRegion())
+FreeCADGui.addCommand('Add Cluster', AddCluster())

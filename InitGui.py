@@ -108,7 +108,7 @@ class TrailsWorkbench(FreeCADGui.Workbench):
         import DraftTools
         from libs import CommandGroup
         from Trails.guitools import gui_cluster, gui_point_importer, gui_point_exporter,\
-            gui_terrain, gui_add_data, gui_terrain_editor, gui_region, gui_sections,\
+            gui_terrain, gui_terrain_data, gui_terrain_editor, gui_region, gui_sections,\
             gui_volume, gui_table, gui_pad, gui_landxml_importer, gui_geowidget
 
         for palette, tool in self.command_ui.items():

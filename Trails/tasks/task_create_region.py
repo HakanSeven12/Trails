@@ -20,55 +20,34 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""Provides GUI tools to add data to Terrain objects."""
+"""Provides the general task panel code to select target object type."""
 
 import FreeCAD, FreeCADGui
-from pivy import coin
 
-from libs import icons_path
-from ..tasks import task_selector
-from ..get import get_clusters
+from libs import ui_path
+from .task_panel import TaskPanel
+from..make import make_region
 
 
-class AddCluster:
-    """
-    Command to add a point to Terrain.
-    """
+class TaskCreateRegion(TaskPanel):
 
-    def __init__(self):
-        """
-        Constructor
-        """
-        pass
+    def __init__(self,group):
+        self.form = FreeCADGui.PySideUic.loadUi(ui_path + '/selector.ui')
+        self.form.setWindowTitle('Select from ' + group.Label)
+        self.form.setWindowIcon(group.ViewObject.Icon)
+        self.list_targets(group)
 
-    def GetResources(self):
-        """
-        Return the command resources dictionary
-        """
-        return {'Pixmap': icons_path + '/AddTriangle.svg',
-            'MenuText': "Add Cluster",
-            'ToolTip': "Add a cluster to selected Terrain."}
+    def list_targets(self, group):
+        self.group_dict = {}
+        for i in group.Group:
+            self.group_dict[i.Label] = i
 
-    def IsActive(self):
-        """
-        Define tool button activation situation
-        """
-        # Check for document
-        if FreeCAD.ActiveDocument:
-            # Check for selected object
-            selection = FreeCADGui.Selection.getSelection()
-            if len(selection)==1:
-                if selection[0].Proxy.Type == 'Trails::Terrain':
-                    self.terrain = selection[0]
-                    return True
-        return False
+        keys = list(self.group_dict.keys())
+        self.form.lw_objects.addItems(keys)
 
-    def Activated(self):
-        """
-        Command activation method
-        """
-        clusters = get_clusters.get()
-        panel = task_selector.TaskSelector(self.terrain, "Clusters", clusters)
-        FreeCADGui.Control.showDialog(panel)
+    def accept(self):
+        alignment = self.form.lw_objects.selectedItems()[0]
+        make_region.create(self.group_dict[alignment.text()])
 
-FreeCADGui.addCommand('Add Cluster', AddCluster())
+        FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
