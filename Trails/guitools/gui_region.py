@@ -26,8 +26,8 @@ import FreeCAD, FreeCADGui
 
 from libs import icons_path
 from ..make import make_region
-from ..tasks import task_create_region
 from ..get import get_alignments
+from ..tasks import task_set_patent
 
 
 class CreateRegion:
@@ -69,10 +69,10 @@ class CreateRegion:
             if selection[-1].Proxy.Type == 'Trails::Alignment':
                 selection = FreeCADGui.Selection.getSelection()
                 make_region.create(selection[-1])
-        
+
         except Exception:
-            group = get_alignments.get()
-            panel = task_create_region.TaskCreateRegion(group)
+            alignments = get_alignments.get()
+            panel = task_set_patent.TaskSetParent(alignments, make_region)
             FreeCADGui.Control.showDialog(panel)
 
 FreeCADGui.addCommand('Create Region', CreateRegion())

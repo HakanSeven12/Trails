@@ -26,15 +26,15 @@ import FreeCAD, FreeCADGui
 
 from libs import ui_path
 from .task_panel import TaskPanel
-from..make import make_region
 
 
-class TaskCreateRegion(TaskPanel):
+class TaskSetParent(TaskPanel):
 
-    def __init__(self,group):
+    def __init__(self,group, creator):
         self.form = FreeCADGui.PySideUic.loadUi(ui_path + '/selector.ui')
         self.form.setWindowTitle('Select from ' + group.Label)
         self.form.setWindowIcon(group.ViewObject.Icon)
+        self.creator = creator
         self.list_targets(group)
 
     def list_targets(self, group):
@@ -46,8 +46,8 @@ class TaskCreateRegion(TaskPanel):
         self.form.lw_objects.addItems(keys)
 
     def accept(self):
-        alignment = self.form.lw_objects.selectedItems()[0]
-        make_region.create(self.group_dict[alignment.text()])
+        selection = self.form.lw_objects.selectedItems()[0]
+        self.creator.create(self.group_dict[selection.text()])
 
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
