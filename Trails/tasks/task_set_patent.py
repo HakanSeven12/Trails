@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""Provides the general task panel code to select target object type."""
+"""Provides the general task panel code to select parent object."""
 
 import FreeCAD, FreeCADGui
 

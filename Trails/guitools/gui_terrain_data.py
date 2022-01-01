@@ -26,7 +26,7 @@ import FreeCAD, FreeCADGui
 from pivy import coin
 
 from libs import icons_path
-from ..tasks import task_terrain_data
+from ..tasks import task_set_prop
 from ..get import get_clusters
 
 
@@ -68,7 +68,7 @@ class AddCluster:
         Command activation method
         """
         clusters = get_clusters.get()
-        panel = task_terrain_data.TaskSelector(self.terrain, "Clusters", clusters)
+        panel = task_set_prop.TaskSetProperty(self.terrain, "Clusters", clusters)
         FreeCADGui.Control.showDialog(panel)
 
 FreeCADGui.addCommand('Add Cluster', AddCluster())

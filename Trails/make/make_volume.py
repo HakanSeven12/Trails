@@ -27,16 +27,18 @@ import FreeCAD
 from ..objects.volume import Volume
 from ..viewproviders.view_volume import ViewProviderVolume
 
-def create(volumes, sections, name='Volume'):
+def create(region, name='Volume'):
     obj=FreeCAD.ActiveDocument.addObject("App::FeaturePython", "Volume")
-    volumes.addObject(obj)
+
+    for item in region.Group:
+        if item.Proxy.Type == 'Trails::Volumes':
+            item.addObject(obj)
+            break
 
     Volume(obj)
     ViewProviderVolume(obj.ViewObject)
 
     obj.Label = name
-    obj.TopSections = sections[0]
-    obj.BottomSections = sections[1]
     FreeCAD.ActiveDocument.recompute()
 
-    return objimpo
+    return obj
