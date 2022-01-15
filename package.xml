@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
+  <name>Trails</name>
+  <description>The Transportation and Geomatics Engineering workbench for FreeCAD.</description>
+  <version>2022-01</version>
+  <date>2022-01-01</date>
+  <maintainer email="@HakanSeven12">Hakan Seven</maintainer>
+  <maintainer email="@joelgraff">Joel Graff</maintainer>
+  <license file="LICENSE">LGPLv2.1</license>
+  <url type="repository" branch="main">https://github.com/HakanSeven12/Trails</url>
+  <url type="bugtracker">https://github.com/HakanSeven12/Trails/issues</url>
+  <icon>Trails/resources/icons/workbench.svg</icon>
+
+  <content>
+    <workbench>
+      <classname>TrailsWorkbench</classname>
+      <subdirectory>./</subdirectory>
+    </workbench>
+  </content>
+
+</package>
