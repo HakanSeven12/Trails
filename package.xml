@@ -4,8 +4,8 @@
   <description>The Transportation and Geomatics Engineering workbench for FreeCAD.</description>
   <version>2022-01</version>
   <date>2022-01-01</date>
-  <maintainer email="@HakanSeven12">Hakan Seven</maintainer>
-  <maintainer email="@joelgraff">Joel Graff</maintainer>
+  <maintainer email="hakanseven12@gmail.com">Hakan Seven</maintainer>
+  <maintainer email="monograff76@gmail.com">Joel Graff</maintainer>
   <license file="LICENSE">LGPLv2.1</license>
   <url type="repository" branch="main">https://github.com/HakanSeven12/Trails</url>
   <url type="bugtracker">https://github.com/HakanSeven12/Trails/issues</url>
