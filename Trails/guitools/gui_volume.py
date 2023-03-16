@@ -25,7 +25,7 @@
 import FreeCAD, FreeCADGui
 
 from libs import icons_path
-from ..make import make_volume
+from ..tasks import task_create_volume
 
 
 class ComputeAreas:
@@ -63,15 +63,8 @@ class ComputeAreas:
         Command activation method
         """
         # Check for selected object
-        selection = FreeCADGui.Selection.getSelection()
-        cs = selection[-1].getParentGroup()
-        region = cs.getParentGroup()
-
-        for item in region.Group:
-            if item.Proxy.Type == 'Trails::Volumes':
-                volumes = item
-                break
-
-        volume = make_volume.create(volumes, selection)
+        region = FreeCADGui.Selection.getSelection()
+        panel = task_create_volume.TaskCreateVolume()
+        FreeCADGui.Control.showDialog(panel)
 
 FreeCADGui.addCommand('Compute Areas', ComputeAreas())

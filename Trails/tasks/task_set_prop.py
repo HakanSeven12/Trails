@@ -28,7 +28,7 @@ from libs import ui_path
 from .task_panel import TaskPanel
 
 
-class TaskSelector(TaskPanel):
+class TaskSetProperty(TaskPanel):
 
     def __init__(self, obj, prop, group):
         self.form = FreeCADGui.PySideUic.loadUi(ui_path + '/selector.ui')

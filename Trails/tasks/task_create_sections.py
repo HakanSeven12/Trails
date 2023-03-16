@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""Provides the task panel code for the Cluster Exporter tool."""
+"""Provides the task panel code for the Create Sections tool."""
 
 import FreeCAD, FreeCADGui
 from pivy import coin
