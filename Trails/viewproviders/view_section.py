@@ -25,7 +25,7 @@
 from pivy import coin
 import random
 
-from libs import icons_path
+from trails_variables import icons_path
 from ..get import get_georigin
 
 

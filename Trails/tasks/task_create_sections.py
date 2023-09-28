@@ -25,7 +25,7 @@
 import FreeCAD, FreeCADGui
 from pivy import coin
 
-from libs import ui_path
+from trails_variables import ui_path
 from .task_panel import TaskPanel
 from ..get import get_terrains
 from ..make import make_section

@@ -24,7 +24,7 @@
 
 import FreeCAD, FreeCADGui
 
-from libs import icons_path
+from trails_variables import icons_path
 from ..make import make_region
 from ..get import get_alignments
 from ..tasks import task_set_patent

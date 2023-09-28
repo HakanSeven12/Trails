@@ -25,7 +25,7 @@
 import FreeCAD
 import Mesh, Part
 
-from libs import icons_path
+from trails_variables import icons_path
 from ..functions.terrain_functions import DataFunctions
 from ..get import get_georigin
 

@@ -25,7 +25,7 @@
 import Points
 import copy
 
-from libs import marker_dict
+from trails_variables import marker_dict
 from ..get import get_georigin
 
 

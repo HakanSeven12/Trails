@@ -25,7 +25,7 @@
 import FreeCAD, FreeCADGui
 
 from pivy import coin
-from libs import icons_path, zone_list
+from trails_variables import icons_path, zone_list
 
 
 class GeoOrigin:

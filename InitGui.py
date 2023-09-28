@@ -29,7 +29,7 @@ class TrailsWorkbench(FreeCADGui.Workbench):
     """
     Class which gets initiated at startup of the GUI.
     """
-    from libs import icons_path
+    from trails_variables import icons_path
 
     MenuText = 'Trails'
     ToolTip = 'Transportation and Geomatics Engineering Workbench'
@@ -106,7 +106,7 @@ class TrailsWorkbench(FreeCADGui.Workbench):
         Called when the workbench is first activated.
         """
         import DraftTools
-        from libs import CommandGroup
+        from trails_variables import CommandGroup
         from Trails.guitools import gui_cluster, gui_point_importer, gui_point_exporter,\
             gui_terrain, gui_terrain_data, gui_terrain_editor, gui_region, gui_sections,\
             gui_volume, gui_table, gui_pad, gui_landxml_importer, gui_geowidget

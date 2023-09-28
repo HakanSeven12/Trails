@@ -25,7 +25,7 @@
 
 import FreeCAD, FreeCADGui
 
-from libs import icons_path
+from trails_variables import icons_path
 from ..tasks import task_landxml_importer
 
 

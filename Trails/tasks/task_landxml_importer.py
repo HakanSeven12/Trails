@@ -26,7 +26,7 @@
 import FreeCAD, FreeCADGui
 from PySide import QtGui, QtCore
 
-from libs import ui_path
+from trails_variables import ui_path
 from ..tasks import landxml_subtask
 from ..make import make_alignment, make_terrain, make_cluster
 

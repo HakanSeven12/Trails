@@ -26,7 +26,7 @@ import FreeCAD
 from pivy import coin
 import random, copy
 
-from libs import icons_path, marker_dict
+from trails_variables import icons_path, marker_dict
 from ..get import get_georigin
 
 

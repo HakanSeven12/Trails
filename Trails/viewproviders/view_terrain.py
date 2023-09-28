@@ -26,7 +26,7 @@ import FreeCAD
 from pivy import coin
 import random
 
-from libs import icons_path, line_patterns
+from trails_variables import icons_path, line_patterns
 from ..functions import terrain_functions
 from ..get import get_georigin
 

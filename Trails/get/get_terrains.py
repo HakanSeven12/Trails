@@ -24,7 +24,7 @@
 
 import FreeCAD
 
-from libs import icons_path
+from trails_variables import icons_path
 from ..objects.group import Group
 from ..viewproviders.view_group import ViewProviderGroup
 

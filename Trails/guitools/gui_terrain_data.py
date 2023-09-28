@@ -25,7 +25,7 @@
 import FreeCAD, FreeCADGui
 from pivy import coin
 
-from libs import icons_path
+from trails_variables import icons_path
 from ..tasks import task_set_prop
 from ..get import get_clusters
 

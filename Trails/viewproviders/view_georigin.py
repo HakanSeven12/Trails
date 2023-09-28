@@ -22,7 +22,7 @@
 
 """Provides the viewprovider code for Geo Origin objects."""
 
-from libs import icons_path
+from trails_variables import icons_path
 
 
 class ViewProviderGeoOrigin:

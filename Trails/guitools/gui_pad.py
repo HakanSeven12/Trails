@@ -25,7 +25,7 @@
 import FreeCAD, FreeCADGui
 import Part
 
-from libs import icons_path
+from trails_variables import icons_path
 from ..make import make_terrain, make_cluster
 from ..get import get_georigin
 

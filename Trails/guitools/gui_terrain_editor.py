@@ -25,7 +25,7 @@
 import FreeCAD, FreeCADGui
 from pivy import coin
 
-from libs import icons_path
+from trails_variables import icons_path
 
 
 class AddPoint:

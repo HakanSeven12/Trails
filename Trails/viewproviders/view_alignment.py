@@ -27,7 +27,7 @@ from pivy import coin
 from copy import deepcopy
 from math import pi
 
-from libs import icons_path
+from trails_variables import icons_path
 from ..get import get_georigin
 from ..functions import alignment_functions
 

@@ -26,7 +26,7 @@ import FreeCAD, FreeCADGui
 from PySide2.QtWidgets import QLineEdit
 import copy
 
-from libs import icons_path
+from trails_variables import icons_path
 
 
 class GeoWidget(QLineEdit):

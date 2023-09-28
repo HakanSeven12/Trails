@@ -25,7 +25,7 @@
 import FreeCAD, FreeCADGui
 from PySide2 import QtWidgets
 
-from libs import ui_path
+from trails_variables import ui_path
 from .task_panel import TaskPanel
 from ..get import get_clusters
 
