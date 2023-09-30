@@ -27,7 +27,7 @@ import FreeCAD, FreeCADGui
 from trails_variables import icons_path
 from ..make import make_region
 from ..get import get_alignments
-from ..tasks import task_set_patent
+from ..tasks import task_set_parent
 
 
 class CreateRegion:
@@ -72,7 +72,7 @@ class CreateRegion:
 
         except Exception:
             alignments = get_alignments.get()
-            panel = task_set_patent.TaskSetParent(alignments, make_region)
+            panel = task_set_parent.TaskSetParent(alignments, make_region)
             FreeCADGui.Control.showDialog(panel)
 
 FreeCADGui.addCommand('Create Region', CreateRegion())
